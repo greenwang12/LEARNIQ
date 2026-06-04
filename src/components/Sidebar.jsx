@@ -1,6 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import {
+  Link,
+  useLocation
+} from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({
+  menuOpen,
+  setMenuOpen
+}) {
 
   const location =
     useLocation();
@@ -37,37 +43,60 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="sidebar">
+    <>
 
-      <div>
+      {menuOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() =>
+            setMenuOpen(false)
+          }
+        />
+      )}
 
-        <h2>
-          LEARNIQ
-        </h2>
+      <div
+        className={`sidebar ${
+          menuOpen
+            ? "open"
+            : ""
+        }`}
+      >
 
-        <div className="sidebar-tag">
-          AI Learning Intelligence Platform
+        <div>
+
+          <h2>
+            LEARNIQ
+          </h2>
+
+          <div className="sidebar-tag">
+            AI Learning Intelligence
+            Platform
+          </div>
+
+          {menu.map((item) => (
+
+            <Link
+              key={item.path}
+              to={item.path}
+              className={
+                location.pathname ===
+                item.path
+                  ? "active-link"
+                  : ""
+              }
+              onClick={() =>
+                setMenuOpen(false)
+              }
+            >
+              {item.name}
+            </Link>
+
+          ))}
+
         </div>
-
-        {menu.map((item) => (
-
-          <Link
-            key={item.path}
-            to={item.path}
-            className={
-              location.pathname ===
-              item.path
-                ? "active-link"
-                : ""
-            }
-          >
-            {item.name}
-          </Link>
-
-        ))}
 
       </div>
 
-    </div>
+    </>
   );
 }

@@ -76,13 +76,21 @@ export default function RootCause() {
         ) {
 
           const latest =
-            studentData[
-              studentData.length - 1
-            ];
+            studentData
+              .sort(
+                (a, b) =>
+                  (b.createdAt?.seconds || 0) -
+                  (a.createdAt?.seconds || 0)
+              )[0];
 
           setRootCauses(
             latest.rootCauses || []
           );
+
+        } else {
+
+          setRootCauses([]);
+
         }
       };
 
@@ -92,7 +100,16 @@ export default function RootCause() {
 
   const causes =
     rootCauses.length > 0
-      ? rootCauses
+      ? rootCauses.map(
+          (cause, index) => ({
+            cause,
+            percentage:
+              Math.max(
+                100 - (index * 20),
+                40
+              )
+          })
+        )
       : demoRootCauses;
 
   return (
@@ -117,71 +134,83 @@ export default function RootCause() {
 
         <br />
 
-        {causes.map((item) => (
+        {causes.length === 0 ? (
 
-          <div
-            key={item.cause}
-            style={{
-              marginBottom:
-                "25px"
-            }}
-          >
+          <p>
+            No root causes found.
+          </p>
 
-            <div
-              style={{
-                display:
-                  "flex",
-                justifyContent:
-                  "space-between",
-                marginBottom:
-                  "8px"
-              }}
-            >
+        ) : (
 
-              <strong>
-                {item.cause}
-              </strong>
-
-              <span>
-                {item.percentage}%
-              </span>
-
-            </div>
-
-            <div
-              style={{
-                width: "100%",
-                height: "14px",
-                borderRadius:
-                  "10px",
-                background:
-                  "rgba(255,255,255,.08)"
-              }}
-            >
+          causes.map(
+            (item, index) => (
 
               <div
+                key={`${item.cause}-${index}`}
                 style={{
-                  width:
-                    `${item.percentage}%`,
-                  height:
-                    "100%",
-                  borderRadius:
-                    "10px",
-
-                  background:
-                    item.percentage >= 75
-                      ? "#ff4d4f"
-                      : item.percentage >= 50
-                      ? "#faad14"
-                      : "#52c41a"
+                  marginBottom:
+                    "25px"
                 }}
-              />
+              >
 
-            </div>
+                <div
+                  style={{
+                    display:
+                      "flex",
+                    justifyContent:
+                      "space-between",
+                    marginBottom:
+                      "8px"
+                  }}
+                >
 
-          </div>
+                  <strong>
+                    {item.cause}
+                  </strong>
 
-        ))}
+                  <span>
+                    {item.percentage}%
+                  </span>
+
+                </div>
+
+                <div
+                  style={{
+                    width: "100%",
+                    height: "14px",
+                    borderRadius:
+                      "10px",
+                    background:
+                      "rgba(255,255,255,.08)"
+                  }}
+                >
+
+                  <div
+                    style={{
+                      width:
+                        `${item.percentage}%`,
+                      height:
+                        "100%",
+                      borderRadius:
+                        "10px",
+
+                      background:
+                        item.percentage >= 75
+                          ? "#ff4d4f"
+                          : item.percentage >= 50
+                          ? "#faad14"
+                          : "#52c41a"
+                    }}
+                  />
+
+                </div>
+
+              </div>
+
+            )
+          )
+
+        )}
 
       </div>
 
@@ -197,7 +226,9 @@ export default function RootCause() {
           Root causes are
           automatically generated
           from the latest student
-          assessment.
+          assessment and updated
+          whenever a new answer
+          sheet is analyzed.
         </p>
 
       </div>

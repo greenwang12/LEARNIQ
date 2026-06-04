@@ -5,12 +5,21 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  increment
 } from "firebase/firestore";
 import StudentBanner from "../components/StudentBanner";
 import useStudent from "../hooks/useStudent";
 
 export default function Dashboard() {
-  const { selectedStudent } = useStudent();
+  const {
+  selectedStudent,
+  setSelectedStudent
+} = useStudent();
 
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -112,6 +121,70 @@ export default function Dashboard() {
             ),
             assessmentData
           );
+          const studentQuery = query(
+  collection(db, "students"),
+  where(
+    "usn",
+    "==",
+    selectedStudent.usn
+  )
+);
+
+const studentSnap =
+  await getDocs(
+    studentQuery
+  );
+
+if (!studentSnap.empty) {
+
+  const studentDoc =
+    studentSnap.docs[0];
+
+  const score =
+    response?.score || 0;
+
+  let riskLevel =
+    "Low";
+
+  if (score < 40)
+    riskLevel = "High";
+  else if (score < 70)
+    riskLevel = "Medium";
+await updateDoc(
+  doc(
+    db,
+    "students",
+    studentDoc.id
+  ),
+  {
+    latestScore: score,
+
+    riskLevel,
+
+    topGap:
+      response?.learningGaps?.[0]
+      || "None",
+
+    assessments:
+      increment(1)
+  }
+);
+
+setSelectedStudent({
+  ...selectedStudent,
+
+  latestScore: score,
+
+  riskLevel,
+
+  topGap:
+    response?.learningGaps?.[0]
+    || "None",
+
+  assessments:
+    (selectedStudent.assessments || 0) + 1
+});
+}
 
           setResult(response);
         } catch (err) {

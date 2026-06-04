@@ -39,17 +39,49 @@ body{
   background:rgba(255,255,255,0.04);
   backdrop-filter:blur(20px);
 }
-
 .sidebar h2{
-  color:white;
-  font-size:32px;
-  margin-bottom:10px;
+
+  font-size:46px;
+
+  font-weight:900;
+
+  letter-spacing:-2px;
+
+  text-align:center;
+
+  margin-bottom:12px;
+
+  line-height:1;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #dbeafe 35%,
+      #93c5fd 70%,
+      #67e8f9 100%
+    );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+    0 0 30px rgba(147,197,253,.25);
 }
 
 .sidebar-tag{
-  color:#60a5fa;
+
+  text-align:center;
+
+  color:#ecefff;
+
+  font-size:15px;
+
+  line-height:1.8;
+
   margin-bottom:40px;
-  font-size:14px;
+
+  opacity:.9;
 }
 
 .sidebar a{
@@ -275,4 +307,288 @@ color:transparent;
     255,
     .05
   );
+}
+/* =========================
+   MOBILE MENU
+========================= */
+
+.mobile-menu-btn{
+  display:none;
+}
+
+.sidebar-overlay{
+  display:none;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:1024px){
+
+  .sidebar{
+    width:240px;
+    padding:20px;
+  }
+
+  .content{
+    padding:25px;
+  }
+
+  .metric{
+    font-size:34px;
+  }
+
+  .page-title{
+    font-size:56px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px){
+
+  .page{
+    min-width:100%;
+  }
+
+  .mobile-menu-btn{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    position:fixed;
+
+    top:16px;
+    left:16px;
+
+    width:52px;
+    height:52px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #60a5fa,
+        #7dd3fc
+      );
+
+    color:white;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    z-index:3000;
+
+    box-shadow:
+      0 12px 30px rgba(96,165,250,.35);
+  }
+
+  .sidebar{
+
+    position:fixed;
+
+    left:-100%;
+
+    top:0;
+
+    width:290px;
+
+    height:100vh;
+
+    z-index:2500;
+
+    transition:.35s ease;
+
+    overflow-y:auto;
+
+    backdrop-filter:blur(30px);
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .sidebar-overlay{
+
+    display:block;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(4px);
+
+    z-index:2000;
+  }
+
+  .content{
+    width:100%;
+    padding:18px;
+    padding-top:90px;
+  }
+
+  .page-title{
+
+    font-size:38px;
+
+    line-height:1.1;
+
+    text-align:center;
+  }
+
+  .subtitle{
+
+    text-align:center;
+
+    font-size:15px;
+
+    line-height:1.7;
+  }
+
+  .bigcard{
+
+    padding:20px;
+
+    border-radius:24px;
+  }
+
+  .section{
+    padding:20px;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .metric{
+    font-size:30px;
+  }
+
+  .student-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+  }
+
+  .student-input{
+
+    width:100%;
+
+    font-size:16px;
+
+    border-radius:16px;
+  }
+
+  .student-row{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:12px;
+  }
+
+  .footer{
+
+    margin-top:50px;
+
+    font-size:12px;
+  }
+
+  .copilot{
+
+    width:58px;
+
+    height:58px;
+
+    font-size:24px;
+
+    bottom:18px;
+
+    right:18px;
+  }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width:480px){
+
+  .page-title{
+
+    font-size:30px;
+  }
+
+  .sidebar{
+
+    width:270px;
+  }
+
+  .content{
+
+    padding:14px;
+
+    padding-top:85px;
+  }
+
+  .bigcard{
+
+    padding:18px;
+
+    border-radius:22px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .section{
+    padding:18px;
+  }
+
+  .metric{
+    font-size:24px;
+  }
+
+  .sidebar h2{
+
+    font-size:42px;
+
+    letter-spacing:-1px;
+  }
+
+  .sidebar-tag{
+
+    font-size:13px;
+  }
+
+  .sidebar a{
+
+    padding:14px;
+
+    font-size:15px;
+  }
 }

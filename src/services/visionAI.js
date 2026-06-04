@@ -103,15 +103,69 @@ Rules:
         }
       );
 
-    const aiText =
-      response.data.choices[0]
-      .message.content
-      .trim();
+ const aiText =
+  response?.data?.choices?.[0]?.message?.content
+  ?.trim() || "";
 
-    return JSON.parse(
-      aiText
-    );
+const cleanedText =
+  aiText
+    .replace(/```json\s*/gi, "")
+    .replace(/```\s*/g, "")
+    .trim();
 
+console.log(
+  "RAW AI RESPONSE:",
+  aiText
+);
+
+try {
+
+  return JSON.parse(
+    cleanedText
+  );
+
+} catch (parseError) {
+
+  console.error(
+    "JSON PARSE ERROR:",
+    parseError
+  );
+
+  console.error(
+    "RAW RESPONSE:",
+    aiText
+  );
+
+  return {
+
+    score: 0,
+
+    learningGaps: [
+      "Response Format Error"
+    ],
+
+    rootCauses: [
+      "AI Formatting Issue"
+    ],
+
+    explainabilityFactors: [
+      {
+        factor:
+          "System Error",
+        percentage: 100
+      }
+    ],
+
+    recommendations: [
+      "Retry Analysis"
+    ],
+
+    summary:
+      "AI returned an invalid JSON format."
+
+  };
+
+}
   } catch (error) {
 
     console.error(

@@ -72,13 +72,21 @@ export default function Analysis() {
         ) {
 
           const latest =
-            studentData[
-              studentData.length - 1
-            ];
+            studentData
+              .sort(
+                (a, b) =>
+                  (b.createdAt?.seconds || 0) -
+                  (a.createdAt?.seconds || 0)
+              )[0];
 
           setHeatmapData(
             latest.learningGaps || []
           );
+
+        } else {
+
+          setHeatmapData([]);
+
         }
       };
 
@@ -88,7 +96,15 @@ export default function Analysis() {
 
   const finalData =
     heatmapData.length > 0
-      ? heatmapData
+      ? heatmapData.map(
+          (gap, index) => ({
+            topic: gap,
+            value: Math.max(
+              90 - (index * 15),
+              40
+            )
+          })
+        )
       : demoHeatmapData;
 
   return (
@@ -133,25 +149,30 @@ export default function Analysis() {
             <YAxis />
 
             <Tooltip />
-<Bar
-  dataKey="value"
-  radius={[8, 8, 0, 0]}
->
-  {finalData.map((entry, index) => (
 
-    <Cell
-      key={index}
-      fill={
-        entry.value >= 75
-          ? "#ff4d4f"
-          : entry.value >= 50
-          ? "#faad14"
-          : "#52c41a"
-      }
-    />
+            <Bar
+              dataKey="value"
+              radius={[8, 8, 0, 0]}
+            >
 
-  ))}
-</Bar>
+              {finalData.map(
+                (entry, index) => (
+
+                  <Cell
+                    key={index}
+                    fill={
+                      entry.value >= 75
+                        ? "#ff4d4f"
+                        : entry.value >= 50
+                        ? "#faad14"
+                        : "#52c41a"
+                    }
+                  />
+
+                )
+              )}
+
+            </Bar>
 
           </BarChart>
 

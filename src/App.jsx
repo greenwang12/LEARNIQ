@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -20,15 +21,37 @@ import "./App.css";
 
 function AppContent() {
 
-  const location =
-    useLocation();
+  const location = useLocation();
+
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
   return (
 
     <div className="page">
 
       {location.pathname !== "/" && (
-        <Sidebar />
+
+        <>
+          <button
+            className="mobile-menu-btn"
+            onClick={() =>
+              setMenuOpen(
+                !menuOpen
+              )
+            }
+          >
+            ☰
+          </button>
+
+          <Sidebar
+            menuOpen={menuOpen}
+            setMenuOpen={
+              setMenuOpen
+            }
+          />
+        </>
+
       )}
 
       <div className="content">
@@ -62,12 +85,16 @@ function AppContent() {
 
           <Route
             path="/xai"
-            element={<ExplainableAI />}
+            element={
+              <ExplainableAI />
+            }
           />
 
           <Route
             path="/intervention"
-            element={<Intervention />}
+            element={
+              <Intervention />
+            }
           />
 
           <Route
